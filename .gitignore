@@ -1,0 +1,9 @@
+# Environment secrets
+.env
+**/.env
+
+# Dependencies
+node_modules/
+
+# Build files
+dist/

@@ -1,0 +1,417 @@
+
+/* MAIN APPLICATION LAYOUT */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #F7F8FA;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background: #FFFFFF;
+  border-right: 1px solid #E5E7EB;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  margin-bottom: 45px;
+}
+
+.sidebar-logo h2 {
+  color: #2563EB;
+  font-size: 26px;
+  margin-bottom: 5px;
+}
+
+.sidebar-logo p {
+  color: #9CA3AF;
+  font-size: 13px;
+}
+
+.nav-heading {
+  color: #9CA3AF;
+  font-size: 11px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #6B7280;
+  padding: 13px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.nav-link:hover {
+  background: #EFF6FF;
+  color: #2563EB;
+}
+
+.nav-link.active {
+  background: #EFF6FF;
+  color: #2563EB;
+  font-weight: bold;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  color: #9CA3AF;
+  font-size: 12px;
+  padding-top: 30px;
+}
+
+/* MAIN CONTENT */
+.main-content {
+  flex: 1;
+  padding: 40px;
+  min-width: 0;
+}
+
+/* PAGE HEADINGS */
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 15px;
+}
+
+.page-heading h1,
+.book-management h1,
+.transactions h1,
+.user-management h1 {
+  font-size: 27px;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.page-heading p,
+.book-management > p,
+.transactions > p,
+.user-management > p {
+  color: #9CA3AF;
+  font-size: 14px;
+}
+
+/* BUTTONS */
+button {
+  border: none;
+  cursor: pointer;
+  border-radius: 7px;
+  padding: 11px 17px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.add-book-btn,
+form button {
+  background: #2563EB;
+  color: white;
+}
+
+.add-book-btn:hover,
+form button:hover {
+  background: #1D4ED8;
+}
+
+/* DASHBOARD STATISTICS */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 23px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.stat-card h3 {
+  color: #6B7280;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+
+.stat-card h2 {
+  color: #111827;
+  font-size: 29px;
+  margin-bottom: 8px;
+}
+
+.stat-card p {
+  color: #9CA3AF;
+  font-size: 12px;
+}
+
+/* DASHBOARD SECTIONS */
+.dashboard-section {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.dashboard-section h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.dashboard-section p {
+  color: #9CA3AF;
+  font-size: 14px;
+}
+
+/* FORMS */
+form {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 25px;
+  margin: 25px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+input,
+select {
+  padding: 12px;
+  border: 1px solid #D1D5DB;
+  border-radius: 7px;
+  outline: none;
+  font-size: 14px;
+  flex: 1;
+  min-width: 150px;
+}
+
+input:focus,
+select:focus {
+  border-color: #2563EB;
+}
+
+/* TABLES */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 15px;
+  border-bottom: 1px solid #E5E7EB;
+  font-size: 13px;
+}
+
+th {
+  background: #F9FAFB;
+  color: #6B7280;
+  font-weight: 600;
+}
+
+td {
+  color: #374151;
+}
+
+td button {
+  margin-right: 5px;
+  background: #EFF6FF;
+  color: #2563EB;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1000px) {
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+
+  .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/* LOGIN PAGE */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  background: #f3f5f9;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.login-card h1 {
+  color: #2563eb;
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+.login-card h2 {
+  margin-top: 35px;
+  margin-bottom: 8px;
+  color: #1e293b;
+}
+
+.login-card p {
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+.login-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-card label {
+  font-weight: 600;
+  color: #334155;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.login-card form > button {
+  padding: 13px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-card form > button:hover {
+  background: #1d4ed8;
+}
+
+.login-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.password-field {
+  display: flex;
+  gap: 8px;
+}
+
+.password-field button {
+  padding: 0 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+.login-error {
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+.login-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 12px;
+}
+
+/* LOGOUT BUTTON */
+
+.header-profile {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.logout-button {
+  padding: 9px 18px;
+  border: 1px solid #fee2e2;
+  border-radius: 8px;
+  background: #fff1f2;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+}
+
+.logout-button:active {
+  transform: scale(0.97);
+}
