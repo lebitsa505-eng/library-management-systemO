@@ -5,6 +5,15 @@ import { useLibrary } from "../context/LibraryContext";
 function BookManagement() {
   const { books, addBook, updateBook, deleteBook } = useLibrary();
 
+  // Get the logged-in user's role
+  const user = JSON.parse(
+    sessionStorage.getItem("bookwiseUser") || "null"
+  );
+
+  // Only Admin and Librarian can manage books
+  const canManageBooks =
+    user?.role === "Admin" || user?.role === "Librarian";
+
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [genre, setGenre] = useState("");
@@ -37,9 +46,7 @@ function BookManagement() {
 
     if (!isbn.trim()) {
       newErrors.isbn = "ISBN is required";
-    } else if (
-      !/^[A-Za-z0-9 /-]{5,50}$/.test(isbn.trim())
-    ) {
+    } else if (!/^[A-Za-z0-9 /-]{5,50}$/.test(isbn.trim())) {
       newErrors.isbn = "Enter a valid ISBN or book identifier";
     }
 
@@ -64,9 +71,9 @@ function BookManagement() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!canManageBooks) return;
+
+    if (!validateForm()) return;
 
     const bookData = {
       title: title.trim(),
@@ -96,6 +103,8 @@ function BookManagement() {
   }
 
   function editBook(book) {
+    if (!canManageBooks) return;
+
     setTitle(book.title);
     setAuthor(book.author);
     setGenre(book.genre || "");
@@ -106,6 +115,8 @@ function BookManagement() {
   }
 
   async function handleDelete(id) {
+    if (!canManageBooks) return;
+
     const confirmed = window.confirm(
       "Are you sure you want to delete this book?"
     );
@@ -141,72 +152,88 @@ function BookManagement() {
   return (
     <div className="book-management">
       <h1>Book Management</h1>
-      <p>Add and manage library books.</p>
 
-      <form onSubmit={handleSubmit} noValidate>
-        <input
-          type="text"
-          placeholder="Book Title"
-          value={title}
-          maxLength="255"
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        {errors.title && <p className="login-error">{errors.title}</p>}
+      <p>
+        {canManageBooks
+          ? "Add and manage library books."
+          : "View the library book collection."}
+      </p>
 
-        <input
-          type="text"
-          placeholder="Author"
-          value={author}
-          maxLength="150"
-          onChange={(e) => setAuthor(e.target.value)}
-        />
-        {errors.author && <p className="login-error">{errors.author}</p>}
+      {/* Add and update form: Admin and Librarian only */}
+      {canManageBooks && (
+        <form onSubmit={handleSubmit} noValidate>
+          <input
+            type="text"
+            placeholder="Book Title"
+            value={title}
+            maxLength="255"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          {errors.title && (
+            <p className="login-error">{errors.title}</p>
+          )}
 
-        <input
-          type="text"
-          placeholder="Genre"
-          value={genre}
-          maxLength="100"
-          onChange={(e) => setGenre(e.target.value)}
-        />
-        {errors.genre && <p className="login-error">{errors.genre}</p>}
+          <input
+            type="text"
+            placeholder="Author"
+            value={author}
+            maxLength="150"
+            onChange={(e) => setAuthor(e.target.value)}
+          />
+          {errors.author && (
+            <p className="login-error">{errors.author}</p>
+          )}
 
-        <input
-          type="text"
-          placeholder="ISBN"
-          value={isbn}
-          maxLength="50"
-          onChange={(e) => setIsbn(e.target.value)}
-        />
-        {errors.isbn && <p className="login-error">{errors.isbn}</p>}
+          <input
+            type="text"
+            placeholder="Genre"
+            value={genre}
+            maxLength="100"
+            onChange={(e) => setGenre(e.target.value)}
+          />
+          {errors.genre && (
+            <p className="login-error">{errors.genre}</p>
+          )}
 
-        <input
-          type="number"
-          min="0"
-          max="100000"
-          step="1"
-          placeholder="Initial Quantity"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-        />
-        {errors.quantity && (
-          <p className="login-error">{errors.quantity}</p>
-        )}
+          <input
+            type="text"
+            placeholder="ISBN"
+            value={isbn}
+            maxLength="50"
+            onChange={(e) => setIsbn(e.target.value)}
+          />
+          {errors.isbn && (
+            <p className="login-error">{errors.isbn}</p>
+          )}
 
-        <button type="submit" disabled={loading}>
-          {loading
-            ? "Saving..."
-            : editingId !== null
-              ? "Update Book"
-              : "Add Book"}
-        </button>
+          <input
+            type="number"
+            min="0"
+            max="100000"
+            step="1"
+            placeholder="Initial Quantity"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+          />
+          {errors.quantity && (
+            <p className="login-error">{errors.quantity}</p>
+          )}
 
-        {editingId !== null && (
-          <button type="button" onClick={cancelEdit}>
-            Cancel
+          <button type="submit" disabled={loading}>
+            {loading
+              ? "Saving..."
+              : editingId !== null
+                ? "Update Book"
+                : "Add Book"}
           </button>
-        )}
-      </form>
+
+          {editingId !== null && (
+            <button type="button" onClick={cancelEdit}>
+              Cancel
+            </button>
+          )}
+        </form>
+      )}
 
       <h2>Books List</h2>
 
@@ -218,7 +245,7 @@ function BookManagement() {
             <th>Genre</th>
             <th>ISBN</th>
             <th>Quantity</th>
-            <th>Actions</th>
+            {canManageBooks && <th>Actions</th>}
           </tr>
         </thead>
 
@@ -230,27 +257,32 @@ function BookManagement() {
               <td>{book.genre}</td>
               <td>{book.isbn}</td>
               <td>{book.quantity}</td>
-              <td>
-                <button
-                  type="button"
-                  onClick={() => editBook(book)}
-                >
-                  Edit
-                </button>
 
-                <button
-                  type="button"
-                  onClick={() => handleDelete(book.id)}
-                >
-                  Delete
-                </button>
-              </td>
+              {canManageBooks && (
+                <td>
+                  <button
+                    type="button"
+                    onClick={() => editBook(book)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(book.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
 
           {books.length === 0 && (
             <tr>
-              <td colSpan="6">No books found.</td>
+              <td colSpan={canManageBooks ? 6 : 5}>
+                No books found.
+              </td>
             </tr>
           )}
         </tbody>
